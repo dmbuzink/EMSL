@@ -1,6 +1,8 @@
-﻿namespace EMSL.Language.Models
+﻿using System.Collections.Generic;
+
+namespace EMSL.Language.Models
 {
-    public class EmslValue
+    internal class EmslValue
     {
         private readonly object _value;
 
@@ -19,7 +21,7 @@
             return (int)_value;
         }
 
-        public MigrationSpecification AsMigrationSpecifications()
+        public MigrationSpecification AsMigrationSpecification()
         {
             return (MigrationSpecification)_value;
         }
@@ -29,9 +31,19 @@
             return (MigrationResource)_value;
         }
 
+        internal IntermediateMigrationResource AsIntermediateMigrationResource()
+        {
+            return (IntermediateMigrationResource)_value;
+        }
+
         public MigrationCsp AsMigrationCsp()
         {
             return (MigrationCsp)_value;
+        }
+
+        public IEnumerable<string> AsStringIEnumerable()
+        {
+            return (IEnumerable<string>)_value;
         }
     }
 }

@@ -62,5 +62,11 @@ public interface IEMSLVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitResource_definition([NotNull] EMSLParser.Resource_definitionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EMSLParser.requires_definition_value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRequires_definition_value([NotNull] EMSLParser.Requires_definition_valueContext context);
 }
 } // namespace EMSL

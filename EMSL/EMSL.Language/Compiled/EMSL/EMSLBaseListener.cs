@@ -96,6 +96,18 @@ public partial class EMSLBaseListener : IEMSLListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitResource_definition([NotNull] EMSLParser.Resource_definitionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EMSLParser.requires_definition_value"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRequires_definition_value([NotNull] EMSLParser.Requires_definition_valueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EMSLParser.requires_definition_value"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRequires_definition_value([NotNull] EMSLParser.Requires_definition_valueContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

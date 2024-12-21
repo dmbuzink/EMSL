@@ -81,5 +81,15 @@ public interface IEMSLListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitResource_definition([NotNull] EMSLParser.Resource_definitionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EMSLParser.requires_definition_value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRequires_definition_value([NotNull] EMSLParser.Requires_definition_valueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EMSLParser.requires_definition_value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRequires_definition_value([NotNull] EMSLParser.Requires_definition_valueContext context);
 }
 } // namespace EMSL
