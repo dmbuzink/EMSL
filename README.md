@@ -1,1 +1,1 @@
-# EMSL
+# Ecofed Migration Specification Language (EMSL)
