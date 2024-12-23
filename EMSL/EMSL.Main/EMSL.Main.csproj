@@ -7,4 +7,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EMSL.Language\EMSL.Language.csproj" />
+    </ItemGroup>
+
 </Project>

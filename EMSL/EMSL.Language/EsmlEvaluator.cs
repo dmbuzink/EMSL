@@ -56,15 +56,17 @@ namespace EMSL.Language
         
         public override EmslValue VisitName_definition(EMSLParser.Name_definitionContext context)
         {
-            var name = context.STRING_LITERAL().Symbol.Text;
-            return new EmslValue(name);
+            var node = context.STRING_LITERAL();
+            var symbol = node.Symbol;
+            var text = symbol.Text;
+            return new EmslValue(text);
         }
 
         public override EmslValue VisitSource_definition(EMSLParser.Source_definitionContext context)
         {
-            var name = context.SOURCE_CSP_NAME().Symbol.Text;
-            var hostname = context.HOSTNAME_VALUE().Symbol.Text;
-            var port = int.Parse(context.PORT_VALUE().Symbol.Text);
+            var name = context.STRING_LITERAL()[0].Symbol.Text;
+            var hostname = context.STRING_LITERAL()[1].Symbol.Text;
+            var port = int.Parse(context.INT_LITERAL().Symbol.Text);
 
             var migrationCsp = new MigrationCsp()
             {
@@ -78,9 +80,9 @@ namespace EMSL.Language
 
         public override EmslValue VisitTarget_definition(EMSLParser.Target_definitionContext context)
         {
-            var name = context.TARGET_CSP_NAME().Symbol.Text;
-            var hostname = context.HOSTNAME_VALUE().Symbol.Text;
-            var port = int.Parse(context.PORT_VALUE().Symbol.Text);
+            var name = context.STRING_LITERAL()[0].Symbol.Text;
+            var hostname = context.STRING_LITERAL()[1].Symbol.Text;
+            var port = int.Parse(context.INT_LITERAL().Symbol.Text);
 
             var migrationCsp = new MigrationCsp()
             {
@@ -94,27 +96,30 @@ namespace EMSL.Language
 
         public override EmslValue VisitResource_definition(EMSLParser.Resource_definitionContext context)
         {
-            var name = context.RESOURCE_NAME().Symbol.Text;
+            var name = context.STRING_LITERAL()[0].Symbol.Text;
             var type = AsMigrationResourceType(context.RESOURCE_TYPE().Symbol.Text);
             MigrationCsp sourceCsp;
-            var sourceCspName = context.SOURCE_CSP_NAME()?.Symbol?.Text;
-            if (sourceCspName != null)
+            
+            var hasSpecifiedSource = context.FROM() != null;
+            if (hasSpecifiedSource)
             {
+                sourceCsp = DefaultSourceCsp;
+            }
+            else
+            {
+                var sourceCspName = context.STRING_LITERAL()[1].Symbol.Text;
                 var sourceCspHasBeenDefined = SourceCsps.TryGetValue(sourceCspName, out sourceCsp);
                 if (!sourceCspHasBeenDefined)
                 {
                     throw new EmslUndefinedSourceException(sourceCspName);
                 }
             }
-            else
-            {
-                sourceCsp = DefaultSourceCsp;
-            }
             
             MigrationCsp targetCsp;
-            var targetCspName = context.TARGET_CSP_NAME()?.Symbol?.Text;
-            if (targetCspName != null)
+            var hasSpecifiedTarget = context.TO() != null;
+            if (hasSpecifiedTarget)
             {
+                var targetCspName = context.STRING_LITERAL().Skip(1 + (hasSpecifiedSource ? 1 : 0)).First().Symbol.Text;
                 var targetCspHasBeenDefined = TargetCsps.TryGetValue(targetCspName, out targetCsp);
                 if (!targetCspHasBeenDefined)
                 {
@@ -126,7 +131,9 @@ namespace EMSL.Language
                 targetCsp = DefaultTargetCsp;
             }
 
-            var requiredResources = Visit(context.requires_definition_value()).AsStringIEnumerable();
+            var requiredResources = context.requires_definition_value() is not null ?
+                Visit(context.requires_definition_value()).AsStringIEnumerable() :
+                [];
 
             var resource = new IntermediateMigrationResource()
             {
@@ -137,6 +144,16 @@ namespace EMSL.Language
                 RequiredResourceNames = requiredResources
             };
             return new EmslValue(resource);
+        }
+
+        public override EmslValue VisitRequires_definition_value(EMSLParser.Requires_definition_valueContext context)
+        {
+            var resultList = context.requires_definition_value() != null
+                ? Visit(context.requires_definition_value()).AsStringIEnumerable()
+                : [];
+
+            resultList = resultList.Append(context.STRING_LITERAL().Symbol.Text);
+            return new EmslValue(resultList);
         }
 
         private static MigrationResourceType AsMigrationResourceType(string rawMigrationResourceType)
@@ -170,7 +187,8 @@ namespace EMSL.Language
                 {
                     if (resourceDict.TryGetValue(rrName, out var mr))
                     {
-                        resource.RequiredResources = resource.RequiredResources.Append(mr);
+                        resourceDict[resource.Name].RequiredResources = resourceDict[resource.Name].RequiredResources.Append(mr);
+                        // mr.RequiredResources = mr.RequiredResources.Append(mr);
                     }
                     else
                     {

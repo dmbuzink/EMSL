@@ -37,10 +37,9 @@ public partial class EMSLParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		NAME=1, SOURCE=2, SOURCE_CSP_NAME=3, TARGET=4, TARGET_CSP_NAME=5, WITH=6, 
-		HOSTNAME=7, HOSTNAME_VALUE=8, PORT=9, PORT_VALUE=10, RESOURCE=11, RESOURCE_NAME=12, 
-		OF=13, TYPE=14, RESOURCE_TYPE=15, FROM=16, TO=17, REQUIRES=18, AND=19, 
-		INT_LITERAL=20, NAME_STRING_LITERAL=21, STRING_LITERAL=22, LINE_ENDINGS=23;
+		NAME=1, SOURCE=2, TARGET=3, WITH=4, HOSTNAME=5, PORT=6, RESOURCE=7, OF=8, 
+		TYPE=9, RESOURCE_TYPE=10, FROM=11, TO=12, REQUIRES=13, AND=14, INT_LITERAL=15, 
+		STRING_LITERAL=16, IGNORED_WS=17;
 	public const int
 		RULE_specification = 0, RULE_name_definition = 1, RULE_source_definition = 2, 
 		RULE_target_definition = 3, RULE_resource_definition = 4, RULE_requires_definition_value = 5;
@@ -50,15 +49,14 @@ public partial class EMSLParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'NAME '", "'SOURCE'", null, "'TARGET'", null, "'WITH'", "'HOSTNAME'", 
-		null, "'PORT'", null, "'RESOURCE'", null, "'OF'", "'TYPE'", null, "'FROM'", 
-		"'TO'", "'REQUIRES'", "'AND'"
+		null, "'NAME'", "'SOURCE'", "'TARGET'", "'WITH'", "'HOSTNAME'", "'PORT'", 
+		"'RESOURCE'", "'OF'", "'TYPE'", null, "'FROM'", "'TO'", "'REQUIRES'", 
+		"'AND'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "NAME", "SOURCE", "SOURCE_CSP_NAME", "TARGET", "TARGET_CSP_NAME", 
-		"WITH", "HOSTNAME", "HOSTNAME_VALUE", "PORT", "PORT_VALUE", "RESOURCE", 
-		"RESOURCE_NAME", "OF", "TYPE", "RESOURCE_TYPE", "FROM", "TO", "REQUIRES", 
-		"AND", "INT_LITERAL", "NAME_STRING_LITERAL", "STRING_LITERAL", "LINE_ENDINGS"
+		null, "NAME", "SOURCE", "TARGET", "WITH", "HOSTNAME", "PORT", "RESOURCE", 
+		"OF", "TYPE", "RESOURCE_TYPE", "FROM", "TO", "REQUIRES", "AND", "INT_LITERAL", 
+		"STRING_LITERAL", "IGNORED_WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -93,10 +91,10 @@ public partial class EMSLParser : Parser {
 	}
 
 	public partial class SpecificationContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(EMSLParser.Eof, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Name_definitionContext name_definition() {
 			return GetRuleContext<Name_definitionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(EMSLParser.Eof, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Source_definitionContext[] source_definition() {
 			return GetRuleContexts<Source_definitionContext>();
 		}
@@ -146,51 +144,59 @@ public partial class EMSLParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 12;
-			name_definition();
-			State = 14;
+			State = 13;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==NAME) {
+				{
+				State = 12;
+				name_definition();
+				}
+			}
+
+			State = 16;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 13;
+				State = 15;
 				source_definition();
 				}
 				}
-				State = 16;
+				State = 18;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==SOURCE );
-			State = 19;
+			State = 21;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 18;
+				State = 20;
 				target_definition();
 				}
 				}
-				State = 21;
+				State = 23;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==TARGET );
-			State = 26;
+			State = 28;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==RESOURCE) {
 				{
 				{
-				State = 23;
+				State = 25;
 				resource_definition();
 				}
 				}
-				State = 28;
+				State = 30;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 29;
+			State = 31;
 			Match(Eof);
 			}
 		}
@@ -238,9 +244,9 @@ public partial class EMSLParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 31;
+			State = 33;
 			Match(NAME);
-			State = 32;
+			State = 34;
 			Match(STRING_LITERAL);
 			}
 		}
@@ -257,15 +263,17 @@ public partial class EMSLParser : Parser {
 
 	public partial class Source_definitionContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SOURCE() { return GetToken(EMSLParser.SOURCE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SOURCE_CSP_NAME() { return GetToken(EMSLParser.SOURCE_CSP_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] STRING_LITERAL() { return GetTokens(EMSLParser.STRING_LITERAL); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL(int i) {
+			return GetToken(EMSLParser.STRING_LITERAL, i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WITH() { return GetTokens(EMSLParser.WITH); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WITH(int i) {
 			return GetToken(EMSLParser.WITH, i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HOSTNAME() { return GetToken(EMSLParser.HOSTNAME, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HOSTNAME_VALUE() { return GetToken(EMSLParser.HOSTNAME_VALUE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PORT() { return GetToken(EMSLParser.PORT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PORT_VALUE() { return GetToken(EMSLParser.PORT_VALUE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT_LITERAL() { return GetToken(EMSLParser.INT_LITERAL, 0); }
 		public Source_definitionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -296,22 +304,22 @@ public partial class EMSLParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 34;
-			Match(SOURCE);
-			State = 35;
-			Match(SOURCE_CSP_NAME);
 			State = 36;
-			Match(WITH);
+			Match(SOURCE);
 			State = 37;
-			Match(HOSTNAME);
+			Match(STRING_LITERAL);
 			State = 38;
-			Match(HOSTNAME_VALUE);
-			State = 39;
 			Match(WITH);
+			State = 39;
+			Match(HOSTNAME);
 			State = 40;
-			Match(PORT);
+			Match(STRING_LITERAL);
 			State = 41;
-			Match(PORT_VALUE);
+			Match(WITH);
+			State = 42;
+			Match(PORT);
+			State = 43;
+			Match(INT_LITERAL);
 			}
 		}
 		catch (RecognitionException re) {
@@ -327,15 +335,17 @@ public partial class EMSLParser : Parser {
 
 	public partial class Target_definitionContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TARGET() { return GetToken(EMSLParser.TARGET, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TARGET_CSP_NAME() { return GetToken(EMSLParser.TARGET_CSP_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] STRING_LITERAL() { return GetTokens(EMSLParser.STRING_LITERAL); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL(int i) {
+			return GetToken(EMSLParser.STRING_LITERAL, i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] WITH() { return GetTokens(EMSLParser.WITH); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WITH(int i) {
 			return GetToken(EMSLParser.WITH, i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HOSTNAME() { return GetToken(EMSLParser.HOSTNAME, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HOSTNAME_VALUE() { return GetToken(EMSLParser.HOSTNAME_VALUE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PORT() { return GetToken(EMSLParser.PORT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PORT_VALUE() { return GetToken(EMSLParser.PORT_VALUE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT_LITERAL() { return GetToken(EMSLParser.INT_LITERAL, 0); }
 		public Target_definitionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -366,22 +376,22 @@ public partial class EMSLParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 43;
-			Match(TARGET);
-			State = 44;
-			Match(TARGET_CSP_NAME);
 			State = 45;
-			Match(WITH);
+			Match(TARGET);
 			State = 46;
-			Match(HOSTNAME);
+			Match(STRING_LITERAL);
 			State = 47;
-			Match(HOSTNAME_VALUE);
-			State = 48;
 			Match(WITH);
+			State = 48;
+			Match(HOSTNAME);
 			State = 49;
-			Match(PORT);
+			Match(STRING_LITERAL);
 			State = 50;
-			Match(PORT_VALUE);
+			Match(WITH);
+			State = 51;
+			Match(PORT);
+			State = 52;
+			Match(INT_LITERAL);
 			}
 		}
 		catch (RecognitionException re) {
@@ -397,14 +407,15 @@ public partial class EMSLParser : Parser {
 
 	public partial class Resource_definitionContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RESOURCE() { return GetToken(EMSLParser.RESOURCE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RESOURCE_NAME() { return GetToken(EMSLParser.RESOURCE_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] STRING_LITERAL() { return GetTokens(EMSLParser.STRING_LITERAL); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL(int i) {
+			return GetToken(EMSLParser.STRING_LITERAL, i);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OF() { return GetToken(EMSLParser.OF, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TYPE() { return GetToken(EMSLParser.TYPE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RESOURCE_TYPE() { return GetToken(EMSLParser.RESOURCE_TYPE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FROM() { return GetToken(EMSLParser.FROM, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SOURCE_CSP_NAME() { return GetToken(EMSLParser.SOURCE_CSP_NAME, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TO() { return GetToken(EMSLParser.TO, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TARGET_CSP_NAME() { return GetToken(EMSLParser.TARGET_CSP_NAME, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode REQUIRES() { return GetToken(EMSLParser.REQUIRES, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Requires_definition_valueContext requires_definition_value() {
 			return GetRuleContext<Requires_definition_valueContext>(0);
@@ -440,48 +451,48 @@ public partial class EMSLParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 52;
-			Match(RESOURCE);
-			State = 53;
-			Match(RESOURCE_NAME);
 			State = 54;
-			Match(OF);
+			Match(RESOURCE);
 			State = 55;
-			Match(TYPE);
+			Match(STRING_LITERAL);
 			State = 56;
+			Match(OF);
+			State = 57;
+			Match(TYPE);
+			State = 58;
 			Match(RESOURCE_TYPE);
-			State = 59;
+			State = 61;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==FROM) {
 				{
-				State = 57;
+				State = 59;
 				Match(FROM);
-				State = 58;
-				Match(SOURCE_CSP_NAME);
+				State = 60;
+				Match(STRING_LITERAL);
 				}
 			}
 
-			State = 63;
+			State = 65;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==TO) {
 				{
-				State = 61;
+				State = 63;
 				Match(TO);
-				State = 62;
-				Match(TARGET_CSP_NAME);
+				State = 64;
+				Match(STRING_LITERAL);
 				}
 			}
 
-			State = 67;
+			State = 69;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==REQUIRES) {
 				{
-				State = 65;
+				State = 67;
 				Match(REQUIRES);
-				State = 66;
+				State = 68;
 				requires_definition_value();
 				}
 			}
@@ -500,7 +511,7 @@ public partial class EMSLParser : Parser {
 	}
 
 	public partial class Requires_definition_valueContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RESOURCE_NAME() { return GetToken(EMSLParser.RESOURCE_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING_LITERAL() { return GetToken(EMSLParser.STRING_LITERAL, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AND() { return GetToken(EMSLParser.AND, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Requires_definition_valueContext requires_definition_value() {
 			return GetRuleContext<Requires_definition_valueContext>(0);
@@ -533,24 +544,24 @@ public partial class EMSLParser : Parser {
 		Requires_definition_valueContext _localctx = new Requires_definition_valueContext(Context, State);
 		EnterRule(_localctx, 10, RULE_requires_definition_value);
 		try {
-			State = 73;
+			State = 75;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 69;
-				Match(RESOURCE_NAME);
+				State = 71;
+				Match(STRING_LITERAL);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 70;
-				Match(RESOURCE_NAME);
-				State = 71;
-				Match(AND);
 				State = 72;
+				Match(STRING_LITERAL);
+				State = 73;
+				Match(AND);
+				State = 74;
 				requires_definition_value();
 				}
 				break;
@@ -568,27 +579,28 @@ public partial class EMSLParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,23,76,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,0,4,0,
-		15,8,0,11,0,12,0,16,1,0,4,0,20,8,0,11,0,12,0,21,1,0,5,0,25,8,0,10,0,12,
-		0,28,9,0,1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,
-		3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,60,8,4,1,
-		4,1,4,3,4,64,8,4,1,4,1,4,3,4,68,8,4,1,5,1,5,1,5,1,5,3,5,74,8,5,1,5,0,0,
-		6,0,2,4,6,8,10,0,0,76,0,12,1,0,0,0,2,31,1,0,0,0,4,34,1,0,0,0,6,43,1,0,
-		0,0,8,52,1,0,0,0,10,73,1,0,0,0,12,14,3,2,1,0,13,15,3,4,2,0,14,13,1,0,0,
-		0,15,16,1,0,0,0,16,14,1,0,0,0,16,17,1,0,0,0,17,19,1,0,0,0,18,20,3,6,3,
-		0,19,18,1,0,0,0,20,21,1,0,0,0,21,19,1,0,0,0,21,22,1,0,0,0,22,26,1,0,0,
-		0,23,25,3,8,4,0,24,23,1,0,0,0,25,28,1,0,0,0,26,24,1,0,0,0,26,27,1,0,0,
-		0,27,29,1,0,0,0,28,26,1,0,0,0,29,30,5,0,0,1,30,1,1,0,0,0,31,32,5,1,0,0,
-		32,33,5,22,0,0,33,3,1,0,0,0,34,35,5,2,0,0,35,36,5,3,0,0,36,37,5,6,0,0,
-		37,38,5,7,0,0,38,39,5,8,0,0,39,40,5,6,0,0,40,41,5,9,0,0,41,42,5,10,0,0,
-		42,5,1,0,0,0,43,44,5,4,0,0,44,45,5,5,0,0,45,46,5,6,0,0,46,47,5,7,0,0,47,
-		48,5,8,0,0,48,49,5,6,0,0,49,50,5,9,0,0,50,51,5,10,0,0,51,7,1,0,0,0,52,
-		53,5,11,0,0,53,54,5,12,0,0,54,55,5,13,0,0,55,56,5,14,0,0,56,59,5,15,0,
-		0,57,58,5,16,0,0,58,60,5,3,0,0,59,57,1,0,0,0,59,60,1,0,0,0,60,63,1,0,0,
-		0,61,62,5,17,0,0,62,64,5,5,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,67,1,0,0,
-		0,65,66,5,18,0,0,66,68,3,10,5,0,67,65,1,0,0,0,67,68,1,0,0,0,68,9,1,0,0,
-		0,69,74,5,12,0,0,70,71,5,12,0,0,71,72,5,19,0,0,72,74,3,10,5,0,73,69,1,
-		0,0,0,73,70,1,0,0,0,74,11,1,0,0,0,7,16,21,26,59,63,67,73
+		4,1,17,78,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,3,0,14,8,
+		0,1,0,4,0,17,8,0,11,0,12,0,18,1,0,4,0,22,8,0,11,0,12,0,23,1,0,5,0,27,8,
+		0,10,0,12,0,30,9,0,1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+		1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,
+		4,62,8,4,1,4,1,4,3,4,66,8,4,1,4,1,4,3,4,70,8,4,1,5,1,5,1,5,1,5,3,5,76,
+		8,5,1,5,0,0,6,0,2,4,6,8,10,0,0,79,0,13,1,0,0,0,2,33,1,0,0,0,4,36,1,0,0,
+		0,6,45,1,0,0,0,8,54,1,0,0,0,10,75,1,0,0,0,12,14,3,2,1,0,13,12,1,0,0,0,
+		13,14,1,0,0,0,14,16,1,0,0,0,15,17,3,4,2,0,16,15,1,0,0,0,17,18,1,0,0,0,
+		18,16,1,0,0,0,18,19,1,0,0,0,19,21,1,0,0,0,20,22,3,6,3,0,21,20,1,0,0,0,
+		22,23,1,0,0,0,23,21,1,0,0,0,23,24,1,0,0,0,24,28,1,0,0,0,25,27,3,8,4,0,
+		26,25,1,0,0,0,27,30,1,0,0,0,28,26,1,0,0,0,28,29,1,0,0,0,29,31,1,0,0,0,
+		30,28,1,0,0,0,31,32,5,0,0,1,32,1,1,0,0,0,33,34,5,1,0,0,34,35,5,16,0,0,
+		35,3,1,0,0,0,36,37,5,2,0,0,37,38,5,16,0,0,38,39,5,4,0,0,39,40,5,5,0,0,
+		40,41,5,16,0,0,41,42,5,4,0,0,42,43,5,6,0,0,43,44,5,15,0,0,44,5,1,0,0,0,
+		45,46,5,3,0,0,46,47,5,16,0,0,47,48,5,4,0,0,48,49,5,5,0,0,49,50,5,16,0,
+		0,50,51,5,4,0,0,51,52,5,6,0,0,52,53,5,15,0,0,53,7,1,0,0,0,54,55,5,7,0,
+		0,55,56,5,16,0,0,56,57,5,8,0,0,57,58,5,9,0,0,58,61,5,10,0,0,59,60,5,11,
+		0,0,60,62,5,16,0,0,61,59,1,0,0,0,61,62,1,0,0,0,62,65,1,0,0,0,63,64,5,12,
+		0,0,64,66,5,16,0,0,65,63,1,0,0,0,65,66,1,0,0,0,66,69,1,0,0,0,67,68,5,13,
+		0,0,68,70,3,10,5,0,69,67,1,0,0,0,69,70,1,0,0,0,70,9,1,0,0,0,71,76,5,16,
+		0,0,72,73,5,16,0,0,73,74,5,14,0,0,74,76,3,10,5,0,75,71,1,0,0,0,75,72,1,
+		0,0,0,76,11,1,0,0,0,8,13,18,23,28,61,65,69,75
 	};
 
 	public static readonly ATN _ATN =

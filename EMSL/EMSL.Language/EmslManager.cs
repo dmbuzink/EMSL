@@ -3,11 +3,11 @@ using EMSL.Language.Models;
 
 namespace EMSL.Language
 {
-    public class EmslManager
+    public static class EmslManager
     {
-        private readonly EsmlEvaluator _evaluator = new EsmlEvaluator();
+        private static readonly EsmlEvaluator _evaluator = new EsmlEvaluator();
         
-        public MigrationSpecification ParseInput(string input)
+        public static MigrationSpecification ParseInput(string input)
         {
             var inputStream = CharStreams.fromString(input);
             var lexer = new EMSLLexer(inputStream);
