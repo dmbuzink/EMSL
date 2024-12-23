@@ -5,16 +5,18 @@ namespace EMSL.Language
 {
     public static class EmslManager
     {
-        private static readonly EsmlEvaluator _evaluator = new EsmlEvaluator();
-        
         public static MigrationSpecification ParseInput(string input)
         {
             var inputStream = CharStreams.fromString(input);
             var lexer = new EMSLLexer(inputStream);
             var tokens = new CommonTokenStream(lexer);
             var parser = new EMSLParser(tokens);
+            var errorListener = new EmslErrorListener();
+            parser.AddErrorListener(errorListener);
             var specificationTree = parser.specification();
-            var result = _evaluator.Visit(specificationTree).AsMigrationSpecification();
+            var evaluator = new EsmlEvaluator();
+            var result = evaluator.Visit(specificationTree).AsMigrationSpecification();
+            errorListener.ThrowIfSyntaxError();
             return result;
         }
     }

@@ -39,7 +39,7 @@ public partial class EMSLParser : Parser {
 	public const int
 		NAME=1, SOURCE=2, TARGET=3, WITH=4, HOSTNAME=5, PORT=6, RESOURCE=7, OF=8, 
 		TYPE=9, RESOURCE_TYPE=10, FROM=11, TO=12, REQUIRES=13, AND=14, INT_LITERAL=15, 
-		STRING_LITERAL=16, IGNORED_WS=17;
+		STRING_LITERAL=16, LINE_COMMENT=17, IGNORED_WS=18;
 	public const int
 		RULE_specification = 0, RULE_name_definition = 1, RULE_source_definition = 2, 
 		RULE_target_definition = 3, RULE_resource_definition = 4, RULE_requires_definition_value = 5;
@@ -56,7 +56,7 @@ public partial class EMSLParser : Parser {
 	private static readonly string[] _SymbolicNames = {
 		null, "NAME", "SOURCE", "TARGET", "WITH", "HOSTNAME", "PORT", "RESOURCE", 
 		"OF", "TYPE", "RESOURCE_TYPE", "FROM", "TO", "REQUIRES", "AND", "INT_LITERAL", 
-		"STRING_LITERAL", "IGNORED_WS"
+		"STRING_LITERAL", "LINE_COMMENT", "IGNORED_WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -579,7 +579,7 @@ public partial class EMSLParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,17,78,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,3,0,14,8,
+		4,1,18,78,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,3,0,14,8,
 		0,1,0,4,0,17,8,0,11,0,12,0,18,1,0,4,0,22,8,0,11,0,12,0,23,1,0,5,0,27,8,
 		0,10,0,12,0,30,9,0,1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
 		1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,

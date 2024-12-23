@@ -103,16 +103,16 @@ namespace EMSL.Language
             var hasSpecifiedSource = context.FROM() != null;
             if (hasSpecifiedSource)
             {
-                sourceCsp = DefaultSourceCsp;
-            }
-            else
-            {
                 var sourceCspName = context.STRING_LITERAL()[1].Symbol.Text;
                 var sourceCspHasBeenDefined = SourceCsps.TryGetValue(sourceCspName, out sourceCsp);
                 if (!sourceCspHasBeenDefined)
                 {
                     throw new EmslUndefinedSourceException(sourceCspName);
                 }
+            }
+            else
+            {
+                sourceCsp = DefaultSourceCsp;
             }
             
             MigrationCsp targetCsp;
@@ -199,5 +199,7 @@ namespace EMSL.Language
 
             return resourceDict.Values;
         }
+        
+        
     }
 }

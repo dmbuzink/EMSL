@@ -42,4 +42,11 @@ namespace EMSL.Language.Models
         {
         }
     }
+
+    public class EmslSyntaxException : EmslException
+    {
+        public EmslSyntaxException(string errorMessage) : base($"Encountered syntax error: \n{errorMessage}")
+        {
+        }
+    }
 }

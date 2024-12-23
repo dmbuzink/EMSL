@@ -44,5 +44,9 @@ INT_LITERAL: '-'?[0-9] | '-'?[1-9][0-9]*;
 STRING_LITERAL: [a-zA-Z0-9-_:/.]+;
 
 
+
+// Ingnore line comments
+LINE_COMMENT : '//' ~[\r\n]* -> skip;
+
 // Ignore line endings
 IGNORED_WS: [ \t\r\n] -> skip;
